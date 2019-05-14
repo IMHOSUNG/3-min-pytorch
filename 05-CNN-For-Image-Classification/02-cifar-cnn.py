@@ -107,6 +107,7 @@ class ResNet(nn.Module):
 # ## 준비
 
 model = ResNet().to(DEVICE)
+model.load_state_dict(torch.load(DirPATH+"200.pth"))
 optimizer = optim.SGD(model.parameters(), lr=0.1,
                       momentum=0.9, weight_decay=0.0005)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.1)
