@@ -3,14 +3,14 @@
 
 # # 5.2 신경망 깊게 쌓아 컬러 데이터셋에 적용하기
 # Convolutional Neural Network (CNN) 을 쌓아올려 딥한 러닝을 해봅시다.
-
+import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torchvision import transforms, datasets, models
 
-
+DirPATH = os.path.dirname(os.path.abspath(__file__))
 torch.manual_seed(42)
 USE_CUDA = torch.cuda.is_available()
 DEVICE = torch.device("cuda" if USE_CUDA else "cpu")
@@ -20,7 +20,6 @@ DEVICE = torch.device("cuda" if USE_CUDA else "cpu")
 
 EPOCHS     = 300
 BATCH_SIZE = 128
-
 
 # ## 데이터셋 불러오기
 
@@ -161,6 +160,10 @@ for epoch in range(1, EPOCHS + 1):
     train(model, train_loader, optimizer, epoch)
     test_loss, test_accuracy = test(model, test_loader)
     
+    if epoch%100 == 0 :
+        NAME = str(epoch)+".pth"
+        torch.save(model.state_dict(), DirPATH+NAME)
+
     print('[{}] Test Loss: {:.4f}, Accuracy: {:.2f}%'.format(
           epoch, test_loss, test_accuracy))
 
